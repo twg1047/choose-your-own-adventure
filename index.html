@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Own Adventure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        #story {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .choice {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .choice:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="story">
+        <h2>The Mysterious Door</h2>
+        <p id="text">One afternoon, as you and your best friend Mia are walking home from school, you take a shortcut through the woods. You've done this a hundred times before, but today something is different. Hidden among the trees, you notice an old wooden door standing all by itself. There are strange symbols carved into it, and a brass handle glistens in the sunlight.</p>
+        <button class="choice" onclick="nextSection('section1')">Open the door and step inside</button>
+        <button class="choice" onclick="nextSection('section2')">Walk past it and go home</button>
+    </div>
+
+    <script>
+        const storySections = {
+            'section1': {
+                text: "As you push open the door, a swirl of golden light surrounds you. When the light fades, you find yourself in a grand library filled with floating books and glowing lanterns. A tiny owl wearing glasses flutters down and speaks. \"Welcome, traveler! You have entered the Library of Secrets. You may read any book, but choose wisely. Some books are magical, and they may change your world forever.\"",
+                choices: [
+                    { text: "Pick up a glowing book from a golden shelf", next: "section3" },
+                    { text: "Ask the owl how to get home", next: "section4" }
+                ]
+            },
+            'section2': {
+                text: "You decide it’s best not to mess with strange doors, so you head home. That night, as you try to sleep, you hear a faint whispering at your window. Peeking outside, you see the door now glowing faintly under the moonlight. A note is stuck to the glass: \"Come back before it’s too late!\"",
+                choices: [
+                    { text: "Sneak out and return to the door", next: "section1" },
+                    { text: "Ignore it and try to sleep", next: "section5" }
+                ]
+            },
+            'section5': {
+                text: "You squeeze your eyes shut and pull the covers over your head. The whispering outside fades, and eventually, you fall asleep. When you wake up, the door is gone. For the rest of your life, you always wonder—what was on the other side? THE END.",
+                choices: []
+            }
+        };
+
+        function nextSection(section) {
+            const storyDiv = document.getElementById("story");
+            const sectionData = storySections[section];
+
+            document.getElementById("text").innerText = sectionData.text;
+            
+            const buttons = document.querySelectorAll(".choice");
+            buttons.forEach(button => button.remove());
+            
+            sectionData.choices.forEach(choice => {
+                let btn = document.createElement("button");
+                btn.innerText = choice.text;
+                btn.className = "choice";
+                btn.onclick = () => nextSection(choice.next);
+                storyDiv.appendChild(btn);
+            });
+        }
+    </script>
+</body>
+</html>
