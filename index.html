@@ -37,9 +37,13 @@
 <body>
     <div id="story">
         <h2>The Mysterious Door</h2>
-        <p id="text">One afternoon, as you and your best friend Mia are walking home from school, you take a shortcut through the woods. You've done this a hundred times before, but today something is different. Hidden among the trees, you notice an old wooden door standing all by itself. There are strange symbols carved into it, and a brass handle glistens in the sunlight.</p>
-        <button class="choice" onclick="nextSection('section1')">Open the door and step inside</button>
-        <button class="choice" onclick="nextSection('section2')">Walk past it and go home</button>
+        <p id="text">
+            One afternoon, as you and your best friend Mia are walking home from school, you take a shortcut through the woods. You've done this a hundred times before, but today something is different. Hidden among the trees, you notice an old wooden door standing all by itself. There are strange symbols carved into it, and a brass handle glistens in the sunlight.
+        </p>
+        <div id="choices">
+            <button class="choice" onclick="nextSection('section1')">Open the door and step inside</button>
+            <button class="choice" onclick="nextSection('section2')">Walk past it and go home</button>
+        </div>
     </div>
 
     <script>
@@ -58,28 +62,68 @@
                     { text: "Ignore it and try to sleep", next: "section5" }
                 ]
             },
+            'section3': {
+                text: "You open the glowing book, and suddenly, you are sucked into its pages. You find yourself in a magical land filled with floating castles and talking animals. A wise old fox approaches you and says, \"You must complete a quest to return home.\"",
+                choices: [
+                    { text: "Accept the quest", next: "section6" },
+                    { text: "Refuse and search for another way home", next: "section7" }
+                ]
+            },
+            'section4': {
+                text: "The owl nods sagely. \"To leave, you must answer a riddle: What has keys but opens no locks?\"",
+                choices: [
+                    { text: "A piano", next: "section8" },
+                    { text: "A treasure chest", next: "section9" }
+                ]
+            },
             'section5': {
                 text: "You squeeze your eyes shut and pull the covers over your head. The whispering outside fades, and eventually, you fall asleep. When you wake up, the door is gone. For the rest of your life, you always wonder—what was on the other side? THE END.",
                 choices: []
+            },
+            'section6': {
+                text: "The fox gives you a glowing crystal and points toward a distant mountain. \"Find the hidden gem within the mountain, and your way home will be revealed.\"",
+                choices: [
+                    { text: "Begin the journey to the mountain", next: "section10" },
+                    { text: "Look for a shortcut through the enchanted forest", next: "section11" }
+                ]
+            },
+            'section7': {
+                text: "You wander through the library, searching for a way home. Suddenly, you stumble upon a mirror that reflects a different version of yourself. Do you step through?",
+                choices: [
+                    { text: "Step into the mirror", next: "section12" },
+                    { text: "Back away and keep searching", next: "section13" }
+                ]
             }
         };
 
         function nextSection(section) {
             const storyDiv = document.getElementById("story");
+            const choicesDiv = document.getElementById("choices");
             const sectionData = storySections[section];
 
+            // Update the story text
             document.getElementById("text").innerText = sectionData.text;
-            
-            const buttons = document.querySelectorAll(".choice");
-            buttons.forEach(button => button.remove());
-            
-            sectionData.choices.forEach(choice => {
-                let btn = document.createElement("button");
-                btn.innerText = choice.text;
-                btn.className = "choice";
-                btn.onclick = () => nextSection(choice.next);
-                storyDiv.appendChild(btn);
-            });
+
+            // Clear existing choices
+            choicesDiv.innerHTML = "";
+
+            // Add new choices if available
+            if (sectionData.choices.length > 0) {
+                sectionData.choices.forEach(choice => {
+                    let btn = document.createElement("button");
+                    btn.innerText = choice.text;
+                    btn.className = "choice";
+                    btn.onclick = () => nextSection(choice.next);
+                    choicesDiv.appendChild(btn);
+                });
+            } else {
+                // If no choices remain, provide a restart button
+                let restartBtn = document.createElement("button");
+                restartBtn.innerText = "Restart the Story";
+                restartBtn.className = "choice";
+                restartBtn.onclick = () => location.reload();
+                choicesDiv.appendChild(restartBtn);
+            }
         }
     </script>
 </body>
